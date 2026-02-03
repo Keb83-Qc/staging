@@ -7,35 +7,35 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Test SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          script: |
-            whoami
-            hostname
-            ls -la /home1/zohqmtle/.ssh
+      - name: Write SSH key
+        run: |
+          echo "${{ secrets.SSH_KEY_B64 }}" | base64 -d > /tmp/bluehost_key
+          chmod 600 /tmp/bluehost_key
+
       - name: Upload via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
+          key_path: /tmp/bluehost_key
+          port: ${{ secrets.SSH_PORT || 22 }}
           source: "./"
           target: "/home1/zohqmtle/laravel/production_vipgpi"
           overwrite: true
           rm: true
-          debug: true
-          strip_components: 0
 
-
-
+      - name: Run server commands
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key_path: /tmp/bluehost_key
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            whoami
+            hostname
+            php -v
