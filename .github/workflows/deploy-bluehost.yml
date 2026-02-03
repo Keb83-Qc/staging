@@ -1,0 +1,49 @@
+name: Deploy to Bluehost (staging)
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upload via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          source: "./"
+          target: "/home1/zohqmtle/laravel/production_vipgpi"
+          overwrite: true
+          rm: true
+          strip_components: 0
+          exclude: |
+            .git/
+            .github/
+            node_modules/
+            vendor/
+            storage/logs/
+            storage/framework/
+            .env
+
+      - name: Run server commands (optional)
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            cd /home1/zohqmtle/laravel/production_vipgpi
+            php -v
+            # Si composer est dispo sur Bluehost:
+            # composer install --no-dev --prefer-dist --optimize-autoloader
+            # php artisan config:cache
+            # php artisan route:cache
