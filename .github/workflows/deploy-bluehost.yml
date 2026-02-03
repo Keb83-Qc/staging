@@ -23,6 +23,7 @@ jobs:
           target: "/home1/zohqmtle/laravel/production_vipgpi"
           overwrite: true
           rm: true
+          debug: true
           strip_components: 0
 
       - name: Run server commands (optional)
