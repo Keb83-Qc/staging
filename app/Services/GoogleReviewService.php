@@ -15,7 +15,7 @@ class GoogleReviewService
         $placeId = Setting::where('key', 'google_place_id')->value('value');
 
         if (!$apiKey || !$placeId) {
-            Log::error('Google Reviews: Clé API ou Place ID manquant.');
+            Log::error('Google Reviews: Clé API ou Place ID manquant. test');
             return;
         }
 
