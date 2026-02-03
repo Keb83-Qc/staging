@@ -12,13 +12,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Test SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            whoami
+            hostname
+            ls -la /home1/zohqmtle/.ssh
       - name: Upload via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
+          port: 22
           source: "./"
           target: "/home1/zohqmtle/laravel/production_vipgpi"
           overwrite: true
@@ -26,24 +37,5 @@ jobs:
           debug: true
           strip_components: 0
 
-      - name: Run server commands (optional)
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: |
-            -----BEGIN OPENSSH PRIVATE KEY-----
-            b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-            QyNTUxOQAAACDLI81JVwvOtTWyus8ZeqvgmpREwSkcrjG+ZD4dx3wPWQAAAKADa7LpA2uy
-            6QAAAAtzc2gtZWQyNTUxOQAAACDLI81JVwvOtTWyus8ZeqvgmpREwSkcrjG+ZD4dx3wPWQ
-            AAAEANkjz9PJJuyCk2IZYQOhG2DOiBqdZUkq98aJyXgDzsVMsjzUlXC861NbK6zxl6q+Ca
-            lETBKRyuMb5kPh3HfA9ZAAAAF2dpdGh1Yi1hY3Rpb25zLWJsdWVob3N0AQIDBAUG
-            -----END OPENSSH PRIVATE KEY-----
-          port: ${{ secrets.SSH_PORT || 22 }}
-          script: |
-            cd /home1/zohqmtle/laravel/production_vipgpi
-            php -v
-            # Si composer est dispo sur Bluehost:
-            # composer install --no-dev --prefer-dist --optimize-autoloader
-            # php artisan config:cache
-            # php artisan route:cache
+
+
