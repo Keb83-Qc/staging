@@ -6,7 +6,7 @@ use App\Models\GoogleReview;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
-
+// test claude
 class GoogleReviewService
 {
     public function fetchAndStoreReviews()
