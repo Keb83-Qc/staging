@@ -11,8 +11,8 @@ class GoogleReviewService
 {
     public function fetchAndStoreReviews()
     {
-        $apiKey = "AIzaSyD-LQmBpkAmGWbScLQdLBkwTOr_jbf2FYM";
-        $placeId = "ChIJyfXfggokyUwRZRLGSgodHxo";
+        $apiKey = Setting::where('key', 'google_api_key')->value('value');
+        $placeId = Setting::where('key', 'google_place_id')->value('value');
 
         if (!$apiKey || !$placeId) {
             Log::error('Google Reviews: Clé API ou Place ID manquant.');
