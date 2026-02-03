@@ -24,14 +24,6 @@ jobs:
           overwrite: true
           rm: true
           strip_components: 0
-          exclude: |
-            .git/
-            .github/
-            node_modules/
-            vendor/
-            storage/logs/
-            storage/framework/
-            .env
 
       - name: Run server commands (optional)
         uses: appleboy/ssh-action@v1.0.3
