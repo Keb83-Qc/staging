@@ -31,7 +31,14 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
+          key: |
+            -----BEGIN OPENSSH PRIVATE KEY-----
+            b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+            QyNTUxOQAAACDLI81JVwvOtTWyus8ZeqvgmpREwSkcrjG+ZD4dx3wPWQAAAKADa7LpA2uy
+            6QAAAAtzc2gtZWQyNTUxOQAAACDLI81JVwvOtTWyus8ZeqvgmpREwSkcrjG+ZD4dx3wPWQ
+            AAAEANkjz9PJJuyCk2IZYQOhG2DOiBqdZUkq98aJyXgDzsVMsjzUlXC861NbK6zxl6q+Ca
+            lETBKRyuMb5kPh3HfA9ZAAAAF2dpdGh1Yi1hY3Rpb25zLWJsdWVob3N0AQIDBAUG
+            -----END OPENSSH PRIVATE KEY-----
           port: ${{ secrets.SSH_PORT || 22 }}
           script: |
             cd /home1/zohqmtle/laravel/production_vipgpi
